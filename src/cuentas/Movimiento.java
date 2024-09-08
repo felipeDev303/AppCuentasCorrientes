@@ -1,17 +1,26 @@
 package cuentas;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class Movimiento {
     private int tipoMovimiento;
     private int monto;
-    private LocalDateTime fecha;
+    private LocalDate fecha;
 
     // Constructor
-    public Movimiento(int tipoMovimiento, int monto) {
+    public Movimiento(int tipoMovimiento, int monto, String fechaStr) {
         this.tipoMovimiento = tipoMovimiento;
         this.monto = monto;
-        this.fecha = LocalDateTime.now();  // Captura la fecha y hora actuales
+
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            this.fecha = LocalDate.parse(fechaStr, formatter);
+        } catch (DateTimeParseException e) {
+            System.out.println("Error: Fecha inválida. Utiliza el formato DD/MM/YYYY.");
+            this.fecha = LocalDate.now();  // Asignamos la fecha actual en caso de error
+        }
     }
 
     // Métodos Getters y Setters
@@ -31,12 +40,11 @@ public class Movimiento {
         this.monto = monto;
     }
 
-    public LocalDateTime getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(LocalDateTime fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 }
-
